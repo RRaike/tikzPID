@@ -1,0 +1,133 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{testPackage}
+
+\RequirePackage{tikz}
+\usepgflibrary{arrows.meta}
+
+\RequirePackage{etoolbox}
+
+\newcommand{\changedimension}[4]{
+    \ifblank{#2}{
+        Is blank: #1, #2, #3, #4
+    }{
+        Isn't blank: #1, #2, #3, #4
+    }
+}
+
+\input{Pumps}
+\input{Drier}
+\input{CoolingTower}
+\input{Crusher}
+\input{Mill}
+\input{Press}
+\input{Separators}
+
+
+
+\pgfkeys{
+        /valve/width/.code = {#1},
+        /valve/width/.initial = {1 cm},
+        /valve/height/.code = {#1},
+        /valve/height/.initial = {1 cm}
+}
+
+\pgfkeys{
+        /compressor/radius/.code = {#1},
+        /compressor/radius/.initial = 1cm,
+        /compressor/angleOne/.code = {#1},
+        /compressor/angleOne/.initial = 10,
+        /compressor/angleTwo/.code = {#1},
+        /compressor/angleTwo/.initial = 130
+}
+
+
+
+
+
+
+
+\pgfdeclareshape{valve}{
+    \savedanchor{\centerpoint}{
+        \pgfpointorigin
+    }
+    \savedanchor{\east}{
+        \pgfpoint{\pgfkeysvalueof{/valve/width}}{0}
+        \pgfpointscale{0.5}{\pgfpoint{\pgf@x}{\pgf@y}}
+    }
+    
+    \anchor{center}{
+        \centerpoint
+    }
+    \anchor{east}{
+        \east
+    }
+    \anchor{west}{
+        \east
+        \pgfpoint{-\pgf@x}{\pgf@y}
+    }
+    
+    \backgroundpath{
+        \pgfpathmoveto{\pgfpointorigin}
+        
+        \pgfpoint{\pgfkeysvalueof{/valve/width}}{\pgfkeysvalueof{/valve/height}}
+        \pgfpointscale{0.5}{\pgfpoint{\pgf@x}{\pgf@y}}
+        \pgf@xa = \pgf@x
+        \pgf@ya = \pgf@y
+        \pgfpathlineto{\pgfpoint{-\pgf@xa}{-\pgf@ya}}
+        \pgfpathlineto{\pgfpoint{-\pgf@xa}{\pgf@ya}}
+        \pgfpathlineto{\pgfpoint{\pgf@xa}{-\pgf@ya}}
+        \pgfpathlineto{\pgfpoint{\pgf@xa}{\pgf@ya}}
+        \pgfpathclose
+        
+        \pgfusepath{stroke}
+    }
+}
+
+
+
+\pgfdeclareshape{compressor}{
+    \savedanchor{\centerpoint}{
+        \pgfpointorigin
+    }
+    \savedanchor{\north}{
+        \pgfpoint{0}{\pgfkeysvalueof{/compressor/radius}}
+    }
+    \savedanchor{\east}{
+        \pgfpoint{\pgfkeysvalueof{/compressor/radius}}{0}
+    }
+
+    
+    \anchor{center}{
+        \centerpoint
+    }
+    \anchor{north}{
+        \north
+    }
+    \anchor{east}{
+        \east
+    }
+    \anchor{south}{
+        \north
+        \pgfpoint{\pgf@x}{-\pgf@y}
+    }
+    \anchor{west}{
+        \east
+        \pgfpoint{-\pgf@x}{\pgf@y}
+    }
+
+
+    \backgroundpath{
+        \pgfpathmoveto{\pgfpointorigin}
+        \pgfpathcircle{\pgfpointorigin}{\pgfkeysvalueof{/compressor/radius}}
+    
+        \pgfpathmoveto{\pgfpointpolar{\pgfkeysvalueof{/compressor/angleOne}}{\pgfkeysvalueof{/compressor/radius}}}
+        \pgfpathlineto{\pgfpointpolar{\pgfkeysvalueof{/compressor/angleTwo}}{\pgfkeysvalueof{/compressor/radius}}}
+        
+        \pgfpathmoveto{\pgfpointpolar{-\pgfkeysvalueof{/compressor/angleOne}}{\pgfkeysvalueof{/compressor/radius}}}
+        \pgfpathlineto{\pgfpointpolar{-\pgfkeysvalueof{/compressor/angleTwo}}{\pgfkeysvalueof{/compressor/radius}}}
+        
+        \pgfusepath{stroke}
+    }
+}
+
+\endinput
