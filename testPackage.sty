@@ -21,15 +21,7 @@
 \input{Mill}
 \input{Press}
 \input{Separators}
-
-
-
-\pgfkeys{
-        /valve/width/.code = {#1},
-        /valve/width/.initial = {1 cm},
-        /valve/height/.code = {#1},
-        /valve/height/.initial = {1 cm}
-}
+\input{Valve}
 
 \pgfkeys{
         /compressor/radius/.code = {#1},
@@ -39,51 +31,6 @@
         /compressor/angleTwo/.code = {#1},
         /compressor/angleTwo/.initial = 130
 }
-
-
-
-
-
-
-
-\pgfdeclareshape{valve}{
-    \savedanchor{\centerpoint}{
-        \pgfpointorigin
-    }
-    \savedanchor{\east}{
-        \pgfpoint{\pgfkeysvalueof{/valve/width}}{0}
-        \pgfpointscale{0.5}{\pgfpoint{\pgf@x}{\pgf@y}}
-    }
-    
-    \anchor{center}{
-        \centerpoint
-    }
-    \anchor{east}{
-        \east
-    }
-    \anchor{west}{
-        \east
-        \pgfpoint{-\pgf@x}{\pgf@y}
-    }
-    
-    \backgroundpath{
-        \pgfpathmoveto{\pgfpointorigin}
-        
-        \pgfpoint{\pgfkeysvalueof{/valve/width}}{\pgfkeysvalueof{/valve/height}}
-        \pgfpointscale{0.5}{\pgfpoint{\pgf@x}{\pgf@y}}
-        \pgf@xa = \pgf@x
-        \pgf@ya = \pgf@y
-        \pgfpathlineto{\pgfpoint{-\pgf@xa}{-\pgf@ya}}
-        \pgfpathlineto{\pgfpoint{-\pgf@xa}{\pgf@ya}}
-        \pgfpathlineto{\pgfpoint{\pgf@xa}{-\pgf@ya}}
-        \pgfpathlineto{\pgfpoint{\pgf@xa}{\pgf@ya}}
-        \pgfpathclose
-        
-        \pgfusepath{stroke}
-    }
-}
-
-
 
 \pgfdeclareshape{compressor}{
     \savedanchor{\centerpoint}{
