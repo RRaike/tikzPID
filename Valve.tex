@@ -139,6 +139,27 @@
                 \pgfsetlinewidth{0.25 \pgflinewidth}
             }
         }},
+        /valve/breather/.code = {
+            \pgfkeys{/valve/draw/.append code = {
+                \pgfpointscale{0.25}{\east}
+                \pgf@xa = \pgf@x
+
+                \east
+                \pgf@xb = \pgf@x
+
+                \pgfpathcircle{\pgfpoint{-\pgf@xb}{0.5 \pgf@xb}}{\pgf@xa}
+
+                \pgfpointscale{0.25}{\east}
+                \pgf@xa = \pgf@x
+
+                \east
+                \pgf@xb = \pgf@x
+                
+                \pgfpathcircle{\pgfpoint{\pgf@xb}{-0.5 \pgf@xb}}{\pgf@xa}
+
+                \pgfusepath{fill, stroke}
+            }
+        }},
         /valve/draw/.code = {},
         /valve/.default = {\pgfkeys{/valve/basic}}
 }
