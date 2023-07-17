@@ -1,0 +1,164 @@
+\pgfkeys{
+        /rupture disc/dimension/width/.code = {#1},
+        /rupture disc/dimension/width/.initial = {0.5 cm},
+        /rupture disc/dimension/height/.code = {#1},
+        /rupture disc/dimension/height/.initial = {1 cm},
+        /flame arrestor/dimension/width/.code = {#1},
+        /flame arrestor/dimension/width/.initial = {0.5 cm},
+        /flame arrestor/dimension/height/.code = {#1},
+        /flame arrestor/dimension/height/.initial = {1 cm},
+        /flame arrestor/.is choice,
+        /flame arrestor/draw/.code = {},
+        /flame arrestor/explosion-proof/.code = {
+            \pgfkeys{/flame arrestor/draw/.append code = {
+        	    \northeast
+                \pgf@xa = 3 \pgf@x
+                \pgf@ya = \pgf@y 
+
+                \pgfpathmoveto{\northeast}
+                \pgfpathlineto{\pgfpoint{\pgf@xa}{\pgf@ya}}
+                \pgfpathlineto{\pgfpoint{\pgf@xa}{- \pgf@ya}}
+
+                \northeast
+                \pgfpathlineto{\pgfpoint{\pgf@x}{- \pgf@ya}}
+                \pgfpathclose
+
+                \pgfusepath{stroke}
+            }
+        }},
+        /flame arrestor/detonation-proof/.code = {
+            \pgfkeys{/flame arrestor/draw/.append code = {
+        	    \northeast
+                \pgf@xa = 3 \pgf@x
+                \pgf@ya = \pgf@y 
+
+                \pgfpathmoveto{\northeast}
+                \pgfpathlineto{\pgfpoint{\pgf@xa}{0}}
+                
+                \northeast
+                \pgfpathlineto{\pgfpoint{\pgf@x}{- \pgf@ya}}
+                \pgfpathclose
+
+                \pgfusepath{stroke}
+            }
+        }},
+        /flame arrestor/fire-resistant/.code = {
+            \pgfkeys{/flame arrestor/draw/.append code = {
+        	    \northeast
+                \pgf@xa = 2 \pgf@x 
+                \pgf@ya = \pgf@y
+
+                \pgfpathmoveto{\northeast}
+                \pgfpatharc{90}{-90}{\pgf@xa and \pgf@ya}
+                \pgfpathclose
+
+                \pgfusepath{stroke}
+            }
+        }},
+        /flame arrestor/.default = {\pgfkeys{/flame arrestor/draw}}
+}
+
+\pgfdeclareshape{rupture disc}{
+    \savedanchor{\centerpoint}{
+        \pgfpointorigin
+    }
+    \savedanchor{\north}{
+        \pgfpointscale{0.5}{\pgfpoint{0}{\pgfkeysvalueof{/rupture disc/dimension/height}}}
+    }
+    \savedanchor{\east}{
+        \pgfpointscale{0.5}{\pgfpoint{\pgfkeysvalueof{/rupture disc/dimension/width}}{0}}
+    }
+    \savedanchor{\northeast}{
+        \pgfpointscale{0.5}{\pgfpoint{\pgfkeysvalueof{/rupture disc/dimension/width}}{\pgfkeysvalueof{/rupture disc/dimension/height}}}
+    }
+    
+    \anchor{center}{
+        \centerpoint
+    }
+    \anchor{east}{
+        \east
+    }
+    \anchor{west}{
+        \east
+        \pgfpoint{-\pgf@x}{\pgf@y}
+    }
+    
+    \backgroundpath{
+        \northeast
+        \pgf@xa = \pgf@x
+        \pgf@ya = \pgf@y
+
+        \pgfpathmoveto{\northeast}
+        \pgfpathlineto{\pgfpoint{\pgf@xa}{-\pgf@ya}}
+        \pgfpathlineto{\pgfpoint{-\pgf@xa}{-\pgf@ya}}
+        \pgfpathlineto{\pgfpoint{-\pgf@xa}{\pgf@ya}}
+        \pgfpathclose
+
+        \pgfpointscale{0.6}{\east}
+        \pgf@xb = \pgf@x
+
+        \pgfpointscale{0.5}{\north}
+        \pgf@yb = \pgf@y
+
+        \pgfpathmoveto{\pgfpoint{-\pgf@xb}{\pgf@ya}}
+        \pgfpathlineto{\pgfpoint{-\pgf@xb}{\pgf@yb}}
+        \pgfpatharc{90}{-90}{\pgf@yb}
+        \pgfpathmoveto{\pgfpoint{-\pgf@xb}{-\pgf@ya}}
+        \pgfpathlineto{\pgfpoint{-\pgf@xb}{-\pgf@yb}}
+
+        \pgfusepath{stroke}
+    }
+}
+
+\pgfdeclareshape{flame arrestor}{
+    \savedanchor{\centerpoint}{
+        \pgfpointorigin
+    }
+    \savedanchor{\north}{
+        \pgfpointscale{0.5}{\pgfpoint{0}{\pgfkeysvalueof{/flame arrestor/dimension/height}}}
+    }
+    \savedanchor{\east}{
+        \pgfpointscale{0.5}{\pgfpoint{\pgfkeysvalueof{/flame arrestor/dimension/width}}{0}}
+    }
+    \savedanchor{\northeast}{
+        \pgfpointscale{0.5}{\pgfpoint{\pgfkeysvalueof{/flame arrestor/dimension/width}}{\pgfkeysvalueof{/flame arrestor/dimension/height}}}
+    }
+    
+    \anchor{center}{
+        \centerpoint
+    }
+    \anchor{east}{
+        \east
+    }
+    \anchor{west}{
+        \east
+        \pgfpoint{-\pgf@x}{\pgf@y}
+    }
+    
+    \backgroundpath{
+        \northeast
+        \pgf@xa = \pgf@x
+        \pgf@ya = \pgf@y
+
+        \pgfpathmoveto{\northeast}
+        \pgfpathlineto{\pgfpoint{\pgf@xa}{-\pgf@ya}}
+        \pgfpathlineto{\pgfpoint{-\pgf@xa}{-\pgf@ya}}
+        \pgfpathlineto{\pgfpoint{-\pgf@xa}{\pgf@ya}}
+        \pgfpathclose
+
+        \pgfpathmoveto{\north}
+        \pgfpathlineto{\pgfpoint{0}{-\pgf@ya}}
+
+        \foreach \j in {-0.5, 0, 0.5}{
+            \pgfpointscale{\j}{\north}
+            \pgf@yb = \pgf@y
+
+            \pgfpathmoveto{\pgfpoint{-\pgf@xa}{\pgf@yb}}
+            \pgfpathlineto{\pgfpoint{\pgf@xa}{\pgf@yb}}
+        }
+
+        \pgfusepath{stroke}
+        
+        \pgfkeys{/flame arrestor/draw}
+    }
+}

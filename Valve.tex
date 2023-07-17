@@ -1,8 +1,6 @@
 \pgfkeys{
         /valve/dimension/width/.code = {#1},
         /valve/dimension/width/.initial = {1 cm},
-        /valve/dimension/height/.code = {#1},
-        /valve/dimension/height/.initial = {1 cm},
         /valve/.is choice,
         /valve/basic/.code = {
             \pgfkeys{/valve/draw/.append code = {
@@ -154,7 +152,7 @@
 
                 \east
                 \pgf@xb = \pgf@x
-                
+
                 \pgfpathcircle{\pgfpoint{\pgf@xb}{-0.5 \pgf@xb}}{\pgf@xa}
 
                 \pgfusepath{fill, stroke}
