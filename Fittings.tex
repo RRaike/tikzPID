@@ -100,6 +100,14 @@
             }
         }},
         /disc/.default = {\pgfkeys{/disc/draw}},
+        /vent/dimension/height bottom/.code = {#1},
+        /vent/dimension/height bottom/.initial = {1 cm},
+        /vent/dimension/height top/.code = {#1},
+        /vent/dimension/height top/.initial = {0.5 cm},
+        /funnel/dimension/height bottom/.code = {#1},
+        /funnel/dimension/height bottom/.initial = {1 cm},
+        /funnel/dimension/height top/.code = {#1},
+        /funnel/dimension/height top/.initial = {0.5 cm},
         /steam trap/dimension/radius/.code = {#1},
         /steam trap/dimension/radius/.initial = {0.5 cm},
         /reducer/dimension/width/.code = {#1},
@@ -203,6 +211,8 @@
                 \pgfusepath{stroke}
             }
         }},
+        /hose/dimension/radius/.code = {#1},
+        /hose/dimension/radius/.initial = {0.2 cm},
 }
 
 
@@ -392,6 +402,71 @@
     }
 }
 
+\pgfdeclareshape{vent}{
+    \savedanchor{\centerpoint}{\pgfpointorigin}
+    \savedanchor{\south}{
+        \pgfpointscale{-0.5}{\pgfpoint{0}{\pgfkeysvalueof{/vent/dimension/height bottom}}}
+    }
+    \savedanchor{\north}{
+        \pgfpointscale{0.5}{\pgfpoint{0}{\pgfkeysvalueof{/vent/dimension/height bottom} + \pgfkeysvalueof{/vent/dimension/height top} + \pgfkeysvalueof{/vent/dimension/height top}}}
+    }
+
+    \anchor{center}{\centerpoint}
+    \anchor{south}{\south}
+    \anchor{north}{\north}
+
+    \backgroundpath{
+        \south
+        \pgf@ya = -\pgf@y
+
+        \pgfpoint{\pgfkeysvalueof{/vent/dimension/height top}}{0}
+        \pgf@xa = \pgf@x
+
+        \pgfpathmoveto{\south}
+        \pgfpathlineto{\pgfpoint{0}{\pgf@ya}}
+        
+        \pgfpathmoveto{\pgfpoint{\pgf@xa}{\pgf@ya}}
+        \pgfpathlineto{\north}
+        \pgfpathlineto{\pgfpoint{-\pgf@xa}{\pgf@ya}}
+
+        \pgfusepath{stroke}
+    }
+}
+
+\pgfdeclareshape{funnel}{
+    \savedanchor{\centerpoint}{\pgfpointorigin}
+    \savedanchor{\south}{
+        \pgfpointscale{-0.5}{\pgfpoint{0}{\pgfkeysvalueof{/funnel/dimension/height bottom}}}
+    }
+    \savedanchor{\north}{
+        \pgfpointscale{0.5}{\pgfpoint{0}{\pgfkeysvalueof{/funnel/dimension/height bottom} + \pgfkeysvalueof{/funnel/dimension/height top} + \pgfkeysvalueof{/funnel/dimension/height top}}}
+    }
+
+    \anchor{center}{\centerpoint}
+    \anchor{south}{\south}
+    \anchor{north}{\north}
+
+    \backgroundpath{
+        \south
+        \pgf@ya = -\pgf@y
+
+        \pgfpoint{\pgfkeysvalueof{/funnel/dimension/height top}}{0}
+        \pgf@xa = \pgf@x
+
+        \north
+        \pgf@yb = \pgf@y
+
+        \pgfpathmoveto{\south}
+        \pgfpathlineto{\pgfpoint{0}{\pgf@ya}}
+        
+        \pgfpathmoveto{\pgfpoint{\pgf@xa}{\pgf@yb}}
+        \pgfpathlineto{\pgfpoint{0}{\pgf@ya}}
+        \pgfpathlineto{\pgfpoint{-\pgf@xa}{\pgf@yb}}
+
+        \pgfusepath{stroke}
+    }
+}
+
 \pgfdeclareshape{steam trap}{
     \savedanchor{\centerpoint}{\pgfpointorigin}
     \savedanchor{\east}{
@@ -496,5 +571,34 @@
 
     \backgroundpath{
         \pgfkeys{/connection/draw}
+    }
+}
+
+
+\pgfdeclareshape{hose}{
+    \savedanchor{\centerpoint}{\pgfpointorigin}
+    \savedanchor{\east}{\pgfpointscale{6}{
+        \pgfpoint{\pgfkeysvalueof{/hose/dimension/radius}}{0}}
+    }
+
+    \anchor{center}{\centerpoint}
+    \anchor{east}{\east}
+    \anchor{west}{
+        \east
+        \pgf@x = -\pgf@x
+    }
+
+    \backgroundpath{
+        \east
+        \pgf@xa = \pgf@x
+        
+        \pgfpathmoveto{\pgfpoint{-\pgf@xa}{0}}
+        
+        \foreach \j in {1, 2, 3}{
+            \pgfpatharc{180}{360}{\pgfkeysvalueof{/hose/dimension/radius}}
+            \pgfpatharc{180}{0}{\pgfkeysvalueof{/hose/dimension/radius}}
+        }
+
+        \pgfusepath{stroke}
     }
 }
