@@ -1,0 +1,66 @@
+%% DOMED VESSEL - QUADRATIC CURVES
+% \pgfpathmoveto{\dome}
+% \pgfpathquadraticcurveto{
+%     \pgfpointadd{\dome}{\pgfpoint{
+%         0.05*\pgfkeysvalueof{/domed vessel/dimension/width}
+%     }{
+%         0.05*\pgfkeysvalueof{/domed vessel/dimension/height dome}
+%     }}
+% }{
+%     \northeast
+    % \pgf@x = 0
+% }
+% \pgfpathmoveto{\dome}
+% \pgfpathquadraticcurveto{
+%     \pgfpointadd{\dome}{\pgfpoint{
+%         -0.05*\pgfkeysvalueof{/domed vessel/dimension/width}
+%     }{
+%         0.1*\pgfkeysvalueof{/domed vessel/dimension/height dome}
+%     }}
+% }{
+%     \northeast
+%     \pgf@x = 0
+% }
+
+% \backgroundpath{
+%         \north
+%         \pgf@xa = \pgf@x
+%         \pgf@ya = \pgf@y
+%         \pgfpathmoveto{\dome}
+%         \pgfpatharc{90}{120}{0.2*\pgfkeysvalueof{/domed vessel/dimension/width}}
+%         \pgfpathlineto{\north}
+%         \pgfpathmoveto{\dome}
+%         \pgfpatharc{90}{60}{0.2*\pgfkeysvalueof{/domed vessel/dimension/width}}
+%         \pgfpathlineto{
+%             \northeast
+%             \pgf@y = \pgf@ya
+%         }
+%         \pgfpathmoveto{\east}
+%         \pgfpatharc{0}{30}{\pgfkeysvalueof{/domed vessel/dimension/height}}
+%         \pgfpathlineto{
+%             \northeast
+%             \pgf@y = \pgf@ya
+%         }
+%         \pgfpathmoveto{\east}
+%         \pgfpatharc{0}{-30}{\pgfkeysvalueof{/domed vessel/dimension/height}}
+%         \pgfpathlineto{
+%             \north
+%             \pgf@y = -\pgf@y
+%         }
+%         \pgfpathmoveto{
+%             \east
+%             \pgf@x = -\pgf@x
+%         }
+%         \pgfpatharc{180}{150}{\pgfkeysvalueof{/domed vessel/dimension/height}}
+%         \pgfpathlineto{\north}
+%         \pgfpathmoveto{
+%             \east
+%             \pgf@x = -\pgf@x
+%         }
+%         \pgfpatharc{180}{210}{\pgfkeysvalueof{/domed vessel/dimension/height}}
+%         \pgfpathlineto{
+%             \north
+%             \pgf@y = -\pgf@y
+%         }
+%         \pgfusepath{stroke}
+%     }

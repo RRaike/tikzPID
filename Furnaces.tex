@@ -1,1 +1,521 @@
+% Boiler with dome and hot liquid steam generator
+\pgfkeys{
+        /boiler/dimension/width/.code = {#1},
+        /boiler/dimension/height/.code = {#1},
+        /boiler/dimension/radius dome/.code = {#1},
+        /boiler/dimension/width/.initial = {2 cm},
+        /boiler/dimension/height/.initial = {2 cm},
+        /boiler/dimension/radius dome/.initial = {0.5 cm},
+        /boiler/.is choice,
+        /boiler/basic/.code = {#1},
+        /boiler/basic/.default={},
+        /boiler/hot liquid/.code = {
+            \pgfkeys{/boiler/basic/.append code = {
+                \pgfpathmoveto{\northright}
+                \pgfpathlineto{\southleft}
+            }
+        }},
+        /boiler/.default = {\pgfkeys{/boiler/basic}}
+}
 
+
+\pgfdeclareshape{boiler}{
+    \savedanchor{\centerpoint}{
+        \pgfpointorigin
+    }
+    \savedanchor{\north}{
+        \pgfpointscale{0.5}{\pgfpoint{0}{2 * \pgfkeysvalueof{/boiler/dimension/radius dome} + \pgfkeysvalueof{/boiler/dimension/height}}}
+    }
+    \savedanchor{\northright}{
+        \pgfpointscale{0.5}{\pgfpoint{\pgfkeysvalueof{/boiler/dimension/width}}{\pgfkeysvalueof{/boiler/dimension/height}}}
+    }
+    \savedanchor{\southleft}{
+        \pgfpointscale{0.5}{\pgfpoint{\pgfkeysvalueof{/boiler/dimension/width}}{\pgfkeysvalueof{/boiler/dimension/height}}}
+        \pgf@y = -\pgf@y
+        \pgf@x = -\pgf@x
+    }
+
+    \anchor{center}{
+        \centerpoint
+    }
+    \anchor{north}{
+        \north
+    }
+    \anchor{east}{
+        \northright
+        \pgf@y = 0.5\pgf@y
+    }
+    \anchor{west}{
+        \northright
+        \pgf@x = -\pgf@x
+        \pgf@y = 0.5\pgf@y
+    }
+    \anchor{south}{
+        \southleft
+        \pgf@x = 0
+    }
+
+
+    \backgroundpath{
+        \pgfpathmoveto{\northright}
+        \northright
+        \pgfpathlineto{\pgfpoint{\pgf@x}{-\pgf@y}}
+        \pgfpathlineto{\southleft}
+        \pgfpathmoveto{\southleft}
+        \southleft
+        \pgfpathlineto{\pgfpoint{\pgf@x}{-\pgf@y}}
+        \pgfpathlineto{\northright}
+
+        \pgfpathmoveto{\north}
+        \pgfpatharc{90}{180}{\pgfkeysvalueof{/boiler/dimension/radius dome}}
+        \pgfpathmoveto{\north}
+        \pgfpatharc{90}{0}{\pgfkeysvalueof{/boiler/dimension/radius dome}}
+
+        \pgfusepath{stroke}
+        \pgfkeys{/boiler/basic}
+        \pgfusepath{stroke}
+        
+    }
+}
+
+% Burner and combustion chamber
+\pgfkeys{
+        /burner/dimension/width/.code = {#1},
+        /burner/dimension/height/.code = {#1},
+        % /burner/dimension/height triangle/.code = {#1},
+        % /burner/dimension/height base/.code = {#1},
+        /burner/dimension/width triangle/.code = {#1},
+        /burner/dimension/width/.initial = {2 cm},
+        /burner/dimension/height/.initial = {1.6 cm},
+        % /burner/dimension/height triangle/.initial = {0.7 cm},
+        % /burner/dimension/height base/.initial = {0.4 cm},
+        /burner/dimension/width triangle/.initial = {1.6 cm},
+        /burner/.is choice,
+        /burner/basic/.code = {#1},
+        /burner/basic/.default = {},
+        /burner/combustion chamber/.code = {
+            \pgfkeys{/burner/basic/.append code = {
+                \pgfpathmoveto{\southeastcorner}
+                \southeastcorner
+                \pgfpathlineto{\pgfpoint{\pgf@x}{-\pgf@y}}
+                \southeastcorner
+                \pgfpathlineto{\pgfpoint{-\pgf@x}{-\pgf@y}}
+                \southeastcorner
+                \pgfpathlineto{\pgfpoint{-\pgf@x}{\pgf@y}}
+                % \pgfpathrectanglecorners{\pgfpoint{\pgf@x}{\pgf@y}}{\pgfpoint{-\pgf@x}{-\pgf@y}}
+            }
+        }},
+        /burner/.default = {\pgfkeys{/burner/basic}}
+}
+
+\pgfdeclareshape{burner}{
+    \savedanchor{\centerpoint}{
+        \pgfpointorigin
+    }
+    \savedanchor{\north}{
+        \pgfpointscale{0.5}{\pgfpoint{0}{\pgfkeysvalueof{/burner/dimension/height}}}
+    }
+    \savedanchor{\east}{
+        \pgfpointscale{0.5}{\pgfpoint{\pgfkeysvalueof{/burner/dimension/width}}{0}}
+        \pgf@xc = \pgf@x
+    }
+    \savedanchor{\southeastcorner}{
+        \pgfpointscale{0.5}{\pgfpoint{\pgfkeysvalueof{/burner/dimension/width}}{\pgfkeysvalueof{/burner/dimension/height}}}
+        \pgf@y = -\pgf@y
+    }
+    \savedanchor{\auxpointsmall}{
+        \pgfpoint{0.23 cm}{-0.4 cm}
+    }
+    \savedanchor{\auxpointlarge}{
+        \pgfpoint{0.46 cm}{-0.4 cm}
+    }
+    \savedanchor{\southeast}{
+        \pgfpointscale{0.125}{\pgfpoint{0}{\pgfkeysvalueof{/burner/dimension/height}}}
+        \pgf@x = \pgf@xc
+    }
+
+    \anchor{center}{
+        \centerpoint
+    }
+    \anchor{north}{
+        \north
+        }
+    \anchor{south}{
+        \north
+        \pgf@y = -\pgf@y
+    }
+    \anchor{east}{
+        \east
+    }
+    \anchor{west}{
+        \east
+        \pgf@x = -\pgf@x
+    }
+    \anchor{southeast}{
+        \southeast
+    }
+    \anchor{southwest}{
+        \southeast
+        \pgf@x = -\pgf@x
+    }
+
+    \backgroundpath{
+        \auxpointsmall
+        \pgf@xa = \pgf@x
+        \pgf@ya = \pgf@y
+        \auxpointlarge
+        \pgf@xb = \pgf@x
+        \pgf@yb = \pgf@y
+
+        \pgfpathmoveto{\centerpoint}
+        \pgfpathlineto{\pgfpoint{\pgf@xa}{\pgf@ya}}
+        \pgfpathmoveto{\centerpoint}
+        \pgfpathlineto{\pgfpoint{-\pgf@xa}{\pgf@ya}}
+
+        \pgfpathmoveto{\pgfpointscale{0.25}{\pgfpoint{0}{\pgfkeysvalueof{/burner/dimension/height}}}}
+        \pgfpathlineto{\pgfpoint{\pgf@xb}{\pgf@yb}}
+        \pgfpathmoveto{\pgfpointscale{0.25}{\pgfpoint{0}{\pgfkeysvalueof{/burner/dimension/height}}}}
+        \pgfpathlineto{\pgfpoint{-\pgf@xb}{\pgf@yb}}
+        \pgfusepath{stroke}
+
+        \pgfpathmoveto{\southeastcorner}
+        \southeastcorner
+        \pgfpathlineto{\pgfpoint{-\pgf@x}{\pgf@y}}
+        \southeastcorner
+        \pgfpathlineto{\pgfpoint{-\pgf@x}{\pgf@ya}}
+        \southeastcorner
+        \pgfpathlineto{\pgfpoint{\pgf@x}{\pgf@ya}}
+        \pgfpathmoveto{\southeastcorner}
+        \southeastcorner
+        \pgfpathlineto{\pgfpoint{\pgf@x}{\pgf@ya}}
+
+        \pgfusepath{stroke}
+        \pgfkeys{/burner/basic}
+        \pgfusepath{stroke}
+    }
+}
+
+\pgfkeys{
+        /furnace/dimension/width/.code = {#1},
+        /furnace/dimension/height/.code = {#1},
+        /furnace/dimension/thickness/.code = {#1},
+        /furnace/dimension/width/.initial = {2 cm},
+        /furnace/dimension/height/.initial = {2 cm},
+        /furnace/dimension/thickness/.initial = {0.4 cm}
+}
+
+\pgfdeclareshape{furnace}{
+    \savedanchor{\centerpoint}{
+        \pgfpointorigin
+    }
+    \savedanchor{\northeast}{
+        \pgfpointscale{0.5}{\pgfpoint{\pgfkeysvalueof{/furnace/dimension/width}}{\pgfkeysvalueof{/furnace/dimension/height}}}
+    }
+    \savedanchor{\south}{
+        \pgfpointscale{0.5}{\pgfpoint{0}{\pgfkeysvalueof{/furnace/dimension/height}}}
+        \pgf@y = -\pgf@y
+    }
+    \savedanchor{\east}{
+        \pgfpointscale{0.25}{\pgfpoint{2*\pgfkeysvalueof{/furnace/dimension/width}}{\pgfkeysvalueof{/furnace/dimension/height}}}
+        \pgf@y = -\pgf@y
+    }
+    \savedanchor{\southeast}{
+        \pgfpointscale{0.25}{\pgfpoint{\pgfkeysvalueof{/furnace/dimension/width}}{-2*\pgfkeysvalueof{/furnace/dimension/height}}}
+    }
+    \savedanchor{\west}{
+        \pgfpointscale{0.15}{\pgfpoint{2*\pgfkeysvalueof{/furnace/dimension/width}}{\pgfkeysvalueof{/furnace/dimension/height}}}
+        \pgf@y = -\pgf@y
+    }
+    \savedanchor{\southwest}{
+        \pgfpointscale{0.15}{\pgfpoint{\pgfkeysvalueof{/furnace/dimension/width}}{-2*\pgfkeysvalueof{/furnace/dimension/height}}}
+    }
+
+    \anchor{center}{
+        \centerpoint
+    }
+    \anchor{north}{
+        \south
+        \pgf@y = -\pgf@y
+    }
+    \anchor{south}{
+        \south
+    }
+    \anchor{east}{
+        \pgfpointscale{0.5}{\pgfpoint{\pgfkeysvalueof{/furnace/dimension/width}}{0}}
+    }
+    \anchor{west}{
+        \pgfpointscale{-0.5}{\pgfpoint{\pgfkeysvalueof{/furnace/dimension/width}}{0}}
+    }
+
+    \backgroundpath{
+        % outer bucket
+        \pgfpathmoveto{\northeast}
+        \pgfpathlineto{\east}
+        \pgfpathlineto{\southeast}
+        \southeast
+        \pgfpathlineto{\pgfpoint{-\pgf@x}{\pgf@y}}
+        \east
+        \pgfpathlineto{\pgfpoint{-\pgf@x}{\pgf@y}}
+        \northeast
+        \pgfpathlineto{\pgfpoint{-\pgf@x}{\pgf@y}}
+        \pgfpathlineto{\northeast}
+
+        % inner bucket
+        \pgfpathmoveto{\west}
+        \pgfpathlineto{\southwest}
+        \southwest
+        \pgfpathlineto{\pgfpoint{-\pgf@x}{\pgf@y}}
+        \west
+        \pgf@xa = \pgf@x
+        \pgfpathlineto{\pgfpoint{-\pgf@x}{\pgf@y}}
+        \northeast
+        \pgfpathlineto{\pgfpoint{-\pgf@xa}{\pgf@y}}
+        \pgfpathmoveto{\west}
+        \northeast
+        \pgfpathlineto{\pgfpoint{\pgf@xa}{\pgf@y}}
+
+        \pgfusepath{stroke}
+    }
+}
+
+\pgfkeys{
+        /stack/dimension/height/.code = {#1},
+        /stack/dimension/width bottom/.code = {#1},
+        /stack/dimension/width top/.code = {#1},
+        /stack/dimension/height/.initial = {2 cm},
+        /stack/dimension/width bottom/.initial = {1 cm},
+        /stack/dimension/width top/.initial = {0.4 cm}
+}
+
+\pgfdeclareshape{stack}{
+    \savedanchor{\centerpoint}{
+        \pgfpointorigin
+    }
+    \savedanchor{\southwest}{
+        \pgfpointscale{0.5}{\pgfpoint{\pgfkeysvalueof{/stack/dimension/width bottom}}{\pgfkeysvalueof{/stack/dimension/height}}}
+        \pgf@x = -\pgf@x
+        \pgf@y = -\pgf@y
+    }
+    \savedanchor{\northeast}{
+        \pgfpointscale{0.5}{\pgfpoint{\pgfkeysvalueof{/stack/dimension/width top}}{\pgfkeysvalueof{/stack/dimension/height}}}
+    }
+
+    \anchor{center}{
+        \centerpoint
+    }
+    \anchor{north}{
+        \northeast
+        \pgf@x = 0
+    }
+    \anchor{south}{
+        \southwest
+        \pgf@x = 0
+    }
+    \anchor{west}{
+        \southwest
+        \pgf@x = \pgf@x + 0.125*\keysvalueof{/stack/dimension/width bottom} + 0.1*\keysvalueof{/stack/dimension/width bottom} - 0.1*\keysvalueof{/stack/dimension/width top}
+        \pgf@y = \pgf@y + 0.1*\keysvalueof{/stack/dimension/height}
+    }
+    \anchor{east}{
+        \west
+        \pgf@x = -\pgf@x
+    }
+
+    \backgroundpath{
+        \pgfpathmoveto{\southwest}
+        \southwest
+        \pgfpathlineto{\pgfpoint{-\pgf@x}{\pgf@y}}
+        \southwest
+        \pgfpathmoveto{\pgfpoint{-0.75*\pgf@x}{\pgf@y}}
+        \pgfpathlineto{\northeast}
+        \southwest
+        \pgfpathmoveto{\pgfpoint{0.75*\pgf@x}{\pgf@y}}
+        \northeast
+        \pgfpathlineto{\pgfpoint{-\pgf@x}{\pgf@y}}
+        \pgfpathlineto{\northeast}
+        \pgfusepath{stroke}
+    }
+}
+
+\pgfkeys{
+        /flare/dimension/height shaft/.code = {#1},
+        /flare/dimension/width/.code = {#1},
+        /flare/dimension/height flame/.code = {#1},
+        /flare/dimension/height shaft/.initial = {1.8 cm},
+        /flare/dimension/width/.initial = {0.4 cm},
+        /flare/dimension/height flame/.initial = {0.6 cm}
+}
+
+\pgfdeclareshape{flare}{
+    \savedanchor{\centerpoint}{
+        \pgfpointorigin
+    }
+    \savedanchor{\north}{
+        \pgfpointscale{0.5}{\pgfpoint{0}{\pgfkeysvalueof{/flare/dimension/height shaft}}}
+    }
+    \savedanchor{\top}{
+        \pgfpointscale{0.5}{\pgfpoint{0}{\pgfkeysvalueof{/flare/dimension/height shaft} + 2* \pgfkeysvalueof{/flare/dimension/height flame}}}
+    }
+    \savedanchor{\south}{
+        \pgfpointscale{0.5}{\pgfpoint{0}{\pgfkeysvalueof{/flare/dimension/height shaft}}}
+        \pgf@y = -\pgf@y
+    }
+    \savedanchor{\southeast}{
+        \pgfpointscale{0.5}{\pgfpoint{\pgfkeysvalueof{/flare/dimension/width}}{0.75*\pgfkeysvalueof{/flare/dimension/height shaft}}}
+        \pgf@y = -\pgf@y
+    }
+
+    \anchor{center}{
+        \centerpoint
+    }
+    \anchor{south}{
+        \south
+    }
+    \anchor{southeast}{
+        \southeast
+    }
+    \anchor{southwest}{
+        \southwest
+        \pgf@x = -\pgf@x
+    }
+
+    \backgroundpath{
+        % shaft and base
+        \pgfpointadd{\south}{\pgfpoint{1.25*\pgfkeysvalueof{/flare/dimension/width}}{0}}
+        \pgf@xa = \pgf@x
+        \pgf@ya = \pgf@y
+        \pgfpathmoveto{\south}
+        \pgfpathlineto{\pgfpoint{\pgf@xa}{\pgf@ya}}
+        \pgfpathmoveto{\south}
+        \pgfpathlineto{\pgfpoint{-\pgf@xa}{\pgf@ya}}
+        \pgfpointadd{\south}{\pgfpoint{0.5*\pgfkeysvalueof{/flare/dimension/width}}{0}}
+        \pgf@xb = \pgf@x
+        \pgf@yb = \pgf@y
+        \pgfpathmoveto{\north}
+        \north
+        \pgfpathlineto{\pgfpoint{\pgf@xb}{\pgf@y}}
+        \pgfpathlineto{\pgfpoint{\pgf@xb}{\pgf@ya}}
+        \pgfpathmoveto{\north}
+        \north
+        \pgfpathlineto{\pgfpoint{-\pgf@xb}{\pgf@y}}
+        \pgfpathlineto{\pgfpoint{-\pgf@xb}{\pgf@ya}}
+
+        % flame
+        \pgfpathmoveto{\north}
+        \pgfpatharc{270}{145}{0.35*\pgfkeysvalueof{/flare/dimension/width}}
+        \pgfpathquadraticcurveto{\pgfpoint{
+            0.2*\pgfkeysvalueof{/flare/dimension/width}
+            }{
+            0.5*\pgfkeysvalueof{/flare/dimension/height shaft} 
+            + 0.75*\pgfkeysvalueof{/flare/dimension/height flame}
+            }}{\top}
+        \pgfpathmoveto{\north}
+        \pgfpatharc{-90}{0}{0.35*\pgfkeysvalueof{/flare/dimension/width}}
+        \pgfpathquadraticcurveto{\pgfpoint{
+            0.35*\pgfkeysvalueof{/flare/dimension/width}
+            }{
+            0.5*\pgfkeysvalueof{/flare/dimension/height shaft} 
+            + 0.6*\pgfkeysvalueof{/flare/dimension/height flame}
+            }}{\top}
+        
+        \pgfusepath{stroke}
+    }
+}
+
+\pgfkeys{
+        /domed vessel/dimension/width/.code = {#1},
+        /domed vessel/dimension/height/.code = {#1},
+        /domed vessel/dimension/height dome/.code = {#1},
+        % /domed vessel/dimension/length ratio/.code = {#1}
+        /domed vessel/dimension/width/.initial = {3 cm},
+        /domed vessel/dimension/height/.initial = {1.2 cm},
+        /domed vessel/dimension/height dome/.initial = {0.4 cm}
+        % /domed vessel/dimension/length ratio/.initial = {0.75}
+}
+
+\pgfdeclareshape{domed vessel}{
+    \savedanchor{\centerpoint}{
+        \pgfpointorigin
+    }
+    \savedanchor{\east}{
+        \pgfpointscale{0.5}{\pgfpoint{\pgfkeysvalueof{/domed vessel/dimension/width}}{0}}
+    }
+    \savedanchor{\northeast}{
+        \pgfpoint{
+            0.2*\pgfkeysvalueof{/domed vessel/dimension/width}
+        }{
+            0.667*\pgfkeysvalueof{/domed vessel/dimension/height dome} + 0.5*\pgfkeysvalueof{/domed vessel/dimension/height}
+        }
+    }
+    \savedanchor{\dome}{
+        \pgfpoint{
+            0.1*\pgfkeysvalueof{/domed vessel/dimension/width}
+        }{
+            \pgfkeysvalueof{/domed vessel/dimension/height dome} + 0.5*\pgfkeysvalueof{/domed vessel/dimension/height}
+        }
+    }
+    \savedanchor{\north}{
+        \pgfpointscale{0.5}{\pgfpoint{0}{\pgfkeysvalueof{/domed vessel/dimension/height}}}
+    }
+
+    \anchor{center}{
+        \centerpoint
+    }
+    \anchor{north}{
+        \north
+    }
+    \anchor{south}{
+        \north
+        \pgf@y = -\pgf@y
+    }
+    \anchor{east}{
+        \east
+    }
+    \anchor{west}{
+        \east
+        \pgf@x = -\pgf@x
+    }
+
+    \backgroundpath{
+        \north
+        \pgf@xa = \pgf@x
+        \pgf@ya = \pgf@y
+        \pgfpathmoveto{\dome}
+        \pgfpatharc{90}{130}{0.1556*\pgfkeysvalueof{/domed vessel/dimension/width}}
+        \pgfpathlineto{\north}
+        \pgfpathmoveto{\dome}
+        \pgfpatharc{90}{50}{0.1556*\pgfkeysvalueof{/domed vessel/dimension/width}}
+        \pgfpathlineto{
+            \northeast
+            \pgf@y = \pgf@ya
+        }
+        \pgfpathmoveto{\east}
+        \pgfpatharc{0}{40}{0.7779*\pgfkeysvalueof{/domed vessel/dimension/height}}
+        \pgfpathlineto{
+            \northeast
+            \pgf@y = \pgf@ya
+        }
+        \pgfpathmoveto{\east}
+        \pgfpatharc{0}{-40}{0.7779*\pgfkeysvalueof{/domed vessel/dimension/height}}
+        \pgfpathlineto{
+            \north
+            \pgf@y = -\pgf@y
+        }
+        \pgfpathmoveto{
+            \east
+            \pgf@x = -\pgf@x
+        }
+        \pgfpatharc{180}{140}{0.7779*\pgfkeysvalueof{/domed vessel/dimension/height}}
+        \pgfpathlineto{\north}
+        \pgfpathmoveto{
+            \east
+            \pgf@x = -\pgf@x
+        }
+        \pgfpatharc{180}{220}{0.7779*\pgfkeysvalueof{/domed vessel/dimension/height}}
+        \pgfpathlineto{
+            \north
+            \pgf@y = -\pgf@y
+        }
+        \pgfusepath{stroke}
+    }
+}
