@@ -381,3 +381,97 @@
     }
    
 }
+
+\pgfdeclareshape{vessel with pit}{
+    \savedanchor{\centerpoint}{
+        \pgfpointorigin
+    }
+    \savedanchor{\west}{
+        \pgfpointscale{0.5}{\pgfpoint{\pgfkeysvalueof{/vessel with pit/dimension/width}}{0}}
+        \pgf@x = -\pgf@x
+    }
+    \savedanchor{\southwest}{
+        \pgfpoint{
+            0.2*\pgfkeysvalueof{/vessel with pit/dimension/width}
+        }{
+            0.667*\pgfkeysvalueof{/vessel with pit/dimension/height dome} + 0.5*\pgfkeysvalueof{/vessel with pit/dimension/height}
+        }
+        \pgf@y = -\pgf@y
+        \pgf@x = -\pgf@x
+    }
+    \savedanchor{\pit}{
+        \pgfpoint{
+            0.1*\pgfkeysvalueof{/vessel with pit/dimension/width}
+        }{
+            \pgfkeysvalueof{/vessel with pit/dimension/height dome} + 0.5*\pgfkeysvalueof{/vessel with pit/dimension/height}
+        }
+        \pgf@y = -\pgf@y
+        \pgf@x = -\pgf@x
+    }
+    \savedanchor{\south}{
+        \pgfpointscale{0.5}{\pgfpoint{0}{\pgfkeysvalueof{/vessel with pit/dimension/height}}}
+        \pgf@y = -\pgf@y
+    }
+
+    \anchor{center}{
+        \centerpoint
+    }
+    \anchor{south}{
+        \south
+    }
+    \anchor{north}{
+        \south
+        \pgf@y = -\pgf@y
+    }
+    \anchor{west}{
+        \west
+    }
+    \anchor{east}{
+        \west
+        \pgf@x = -\pgf@x
+    }
+
+    \backgroundpath{
+        \south
+        \pgf@xa = \pgf@x
+        \pgf@ya = \pgf@y
+        \pgfpathmoveto{\pit}
+        \pgfpatharc{270}{310}{0.1556*\pgfkeysvalueof{/vessel with pit/dimension/width}}
+        \pgfpathlineto{\south}
+        \pgfpathmoveto{\pit}
+        \pgfpatharc{270}{230}{0.1556*\pgfkeysvalueof{/vessel with pit/dimension/width}}
+        \pgfpathlineto{
+            \southwest
+            \pgf@y = \pgf@ya
+        }
+        \pgfpathmoveto{\west}
+        \pgfpatharc{180}{220}{0.7779*\pgfkeysvalueof{/vessel with pit/dimension/height}}
+        \pgfpathlineto{
+            \southwest
+            \pgf@y = \pgf@ya
+        }
+        \pgfpathmoveto{\west}
+        \pgfpatharc{180}{140}{0.7779*\pgfkeysvalueof{/vessel with pit/dimension/height}}
+        \pgfpathlineto{
+            \south
+            \pgf@y = -\pgf@y
+        }
+        \pgfpathmoveto{
+            \west
+            \pgf@x = -\pgf@x
+        }
+        \pgfpatharc{0}{-40}{0.7779*\pgfkeysvalueof{/vessel with pit/dimension/height}}
+        \pgfpathlineto{\south}
+        \pgfpathmoveto{
+            \west
+            \pgf@x = -\pgf@x
+        }
+        \pgfpatharc{0}{40}{0.7779*\pgfkeysvalueof{/vessel with pit/dimension/height}}
+
+        \pgfpathlineto{
+            \south
+            \pgf@y = -\pgf@y
+        }
+        \pgfusepath{stroke}
+    }
+}
