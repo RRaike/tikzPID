@@ -22,6 +22,7 @@
 \input{Press}
 \input{Separators}
 \input{Tank}
+\input{Compressors}
 
 
 \pgfkeys{
@@ -31,14 +32,14 @@
         /valve/height/.initial = {1 cm}
 }
 
-\pgfkeys{
-        /compressor/radius/.code = {#1},
-        /compressor/radius/.initial = 1cm,
-        /compressor/angleOne/.code = {#1},
-        /compressor/angleOne/.initial = 10,
-        /compressor/angleTwo/.code = {#1},
-        /compressor/angleTwo/.initial = 130
-}
+% \pgfkeys{
+%         /compressor/radius/.code = {#1},
+%         /compressor/radius/.initial = 1cm,
+%         /compressor/angleOne/.code = {#1},
+%         /compressor/angleOne/.initial = 10,
+%         /compressor/angleTwo/.code = {#1},
+%         /compressor/angleTwo/.initial = 130
+% }
 
 
 
@@ -85,49 +86,49 @@
 
 
 
-\pgfdeclareshape{compressor}{
-    \savedanchor{\centerpoint}{
-        \pgfpointorigin
-    }
-    \savedanchor{\north}{
-        \pgfpoint{0}{\pgfkeysvalueof{/compressor/radius}}
-    }
-    \savedanchor{\east}{
-        \pgfpoint{\pgfkeysvalueof{/compressor/radius}}{0}
-    }
+% \pgfdeclareshape{compressor}{
+%     \savedanchor{\centerpoint}{
+%         \pgfpointorigin
+%     }
+%     \savedanchor{\north}{
+%         \pgfpoint{0}{\pgfkeysvalueof{/compressor/radius}}
+%     }
+%     \savedanchor{\east}{
+%         \pgfpoint{\pgfkeysvalueof{/compressor/radius}}{0}
+%     }
 
     
-    \anchor{center}{
-        \centerpoint
-    }
-    \anchor{north}{
-        \north
-    }
-    \anchor{east}{
-        \east
-    }
-    \anchor{south}{
-        \north
-        \pgfpoint{\pgf@x}{-\pgf@y}
-    }
-    \anchor{west}{
-        \east
-        \pgfpoint{-\pgf@x}{\pgf@y}
-    }
+%     \anchor{center}{
+%         \centerpoint
+%     }
+%     \anchor{north}{
+%         \north
+%     }
+%     \anchor{east}{
+%         \east
+%     }
+%     \anchor{south}{
+%         \north
+%         \pgfpoint{\pgf@x}{-\pgf@y}
+%     }
+%     \anchor{west}{
+%         \east
+%         \pgfpoint{-\pgf@x}{\pgf@y}
+%     }
 
 
-    \backgroundpath{
-        \pgfpathmoveto{\pgfpointorigin}
-        \pgfpathcircle{\pgfpointorigin}{\pgfkeysvalueof{/compressor/radius}}
+    % \backgroundpath{
+    %     \pgfpathmoveto{\pgfpointorigin}
+    %     \pgfpathcircle{\pgfpointorigin}{\pgfkeysvalueof{/compressor/radius}}
     
-        \pgfpathmoveto{\pgfpointpolar{\pgfkeysvalueof{/compressor/angleOne}}{\pgfkeysvalueof{/compressor/radius}}}
-        \pgfpathlineto{\pgfpointpolar{\pgfkeysvalueof{/compressor/angleTwo}}{\pgfkeysvalueof{/compressor/radius}}}
+    %     \pgfpathmoveto{\pgfpointpolar{\pgfkeysvalueof{/compressor/angleOne}}{\pgfkeysvalueof{/compressor/radius}}}
+    %     \pgfpathlineto{\pgfpointpolar{\pgfkeysvalueof{/compressor/angleTwo}}{\pgfkeysvalueof{/compressor/radius}}}
         
-        \pgfpathmoveto{\pgfpointpolar{-\pgfkeysvalueof{/compressor/angleOne}}{\pgfkeysvalueof{/compressor/radius}}}
-        \pgfpathlineto{\pgfpointpolar{-\pgfkeysvalueof{/compressor/angleTwo}}{\pgfkeysvalueof{/compressor/radius}}}
+    %     \pgfpathmoveto{\pgfpointpolar{-\pgfkeysvalueof{/compressor/angleOne}}{\pgfkeysvalueof{/compressor/radius}}}
+    %     \pgfpathlineto{\pgfpointpolar{-\pgfkeysvalueof{/compressor/angleTwo}}{\pgfkeysvalueof{/compressor/radius}}}
         
-        \pgfusepath{stroke}
-    }
-}
+    %     \pgfusepath{stroke}
+    % }
+% }
 
 \endinput
