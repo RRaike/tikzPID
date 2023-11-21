@@ -1,0 +1,69 @@
+\pgfkeys{
+        /HE round/dimension/radius/.code = {#1},
+        /HE round/dimension/radius/.initial = {1 cm},
+        /HE round/.is choice,
+        /HE round/basic/.code = {#1},
+        /HE round/basic/.default = {},
+        /HE round/general/.code = {
+            \pgfkeys{/HE round/basic/.append code = {
+                \pgfpointscale{0.5}{\east}
+                \pgf@xa = \pgf@x
+                
+                \pgfpointscale{0.5}{\north}
+                \pgf@ya = \pgf@y
+
+                \east
+                \pgfpatehmoveto{\pgfpoint{-\pgf@x}{0}}
+                \pgfpathlineto{\pgfpoint{-\pgf@xa}{0}}
+                \pgfpathlineto{\pgfpoint{0}{\pgf@ya}}
+                \pgfpathlineto{\pgfpoint{0}{-\pgf@ya}}
+                \pgfpathlineto{\pgfpoint{\pgf@xa}{0}}
+                \pgfpathlineto{\east}
+
+                \pgfusepath{stroke}
+            }
+        }},
+        /HE round/m/.code = {
+            \pgfkeys{/HE round/basic/.append code = {
+                \pgfpointpolar{30}{\pgfkeysvalueof{/HE round/dimension/radius}}
+                \pgf@xa = \pgf@x
+                \pgf@ya = \pgf@y
+
+                \pgfpathmoveto{\pgfpoint{1.5 \pgf@xa}{\pgf@ya}}
+                \pgfpathlineto{\pgfpoint{-0.6 \pgf@xa}{\pgf@ya}}
+                \pgfpathlineto{\centerpoint}
+                \pgfpathlineto{\pgfpoint{-0.6 \pgf@xa}{-\pgf@ya}}
+                \pgfpathlineto{\pgfpoint{1.5 \pgf@xa}{-\pgf@ya}}
+
+                \pgfusepath{stroke}
+            }
+        }},
+        /HE round/.default = {\pgfkeys{/HE round/basic}}
+}
+
+\pgfdeclareshape{HE round}{
+    \savedanchor{\centerpoint}{\pgfpointorigin}
+    \savedanchor{\north}{\pgfpoint{0}{\pgfkeysvalueof{/HE round/dimension/radius}}}
+    \savedanchor{\east}{\pgfpoint{\pgfkeysvalueof{/HE round/dimension/radius}}{0}}
+
+    \anchor{center}{\centerpoint}
+    \anchor{north}{\north}
+    \anchor{east}{\east}
+    \anchor{west}{
+        \east
+        \pgf@x = -\pgf@x
+    }
+    \anchor{south}{
+        \north
+        \pgf@y = -\pgf@y
+    }
+
+    \backgroundpath{
+        \pgfpathcircle{\centerpoint}{\pgfkeysvalueof{/HE round/dimension/radius}}
+        \pgfusepath{stroke}
+
+        \pgfkeys{/HE round/basic}
+    
+        \pgfusepath{stroke}
+    }
+}
